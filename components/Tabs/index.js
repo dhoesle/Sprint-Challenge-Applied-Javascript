@@ -7,3 +7,41 @@
 //
 //  Each tab should look like this:
 //    <div class="tab">topic here</div>
+
+let topics = document.querySelector('.topics')
+
+function getTopics() {
+    let promise = axios.get('https://lambda-times-backend.herokuapp.com/topics')
+    promise.then(response => {
+        const topic = response.data.topics
+        console.log('the response from the API, organized for us by axios',topic)
+
+        function tabMaker(topic){
+            let tab = document.createElement('div')
+            tab.classList.add('tab')
+            tab.innerHTML = topic
+            topics.appendChild(tab)
+            return tab
+            
+        }
+        for (i = 0; i < response.data.topics.length; i++) {
+            tabMaker(topic[i])
+        }
+        
+
+
+
+    })
+    .catch(error => {
+        console.log('something went wrong, hopefully the error tells us what', error);
+    })
+
+    .then(() => {
+    console.log('done')
+    })
+}
+getTopics()
+
+
+
+
