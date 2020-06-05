@@ -40,7 +40,7 @@ function getTopics() {
     console.log('done')
     })
 }
-getTopics()
+// getTopics()
 
 
 

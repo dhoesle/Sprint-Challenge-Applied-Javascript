@@ -25,11 +25,54 @@ let cardsContainer = document.querySelector('.cards-container')
 function getCards() {
     let promise = axios.get('https://lambda-times-backend.herokuapp.com/articles')
     promise.then(response => {
-        let articles = response.data.articles.javascript
+        let axiosTopics = response.data.articles
+        // console.log("getCards -> topics", axiosTopics)
+       let topicsArray = []
+        for (let [key,] of Object.entries(axiosTopics)) {
+            topicsArray.push(key)
+            console.log(key);
+          }
+        console.log(topicsArray) 
+        let articles = axiosTopics.javascript[0]
         console.log('the response from the API, organized for us by axios',articles)
+        newCard = cardMaker(articles)
+        
+        
 
+        function cardMaker(article){
+            let card = document.createElement('div')
+            card.classList.add('card')
+            // console.log("cardMaker -> card", card)
+        
+            let headline = document.createElement('div')
+            headline.classList.add('headline')
+            headline.innerHTML = `${article.headline}`
+            card.appendChild(headline)
+        
+            let author = document.createElement('div')
+            author.classList.add('author')
+            card.appendChild(author)
+        
+            let imgContainer = document.createElement('div')
+            imgContainer.classList.add('img-container')
+            author.appendChild(imgContainer)
+        
+            let img = document.createElement('img')
+            img.src = `${article.authorPhoto}`
+            imgContainer.appendChild(img)
+        
+            let span = document.createElement('span')
+            span.innerHTML = `By ${article.authorName}`
+            author.appendChild(span)
+        
+            // console.log("cardMaker -> card", card)
+            return card
         
         
+        }
+        cardMaker(articles)
+                cardsContainer.appendChild(newCard)        
+
 
 
 
@@ -48,32 +91,3 @@ getCards()
 // console.log("cardsContainer", cardsContainer)
 
 
-function cardMaker(){
-    let card = document.createElement('div')
-    card.classList.add('card')
-    // console.log("cardMaker -> card", card)
-
-    let headline = document.createElement('div')
-    headline.classList.add('headline')
-    headline.innerHTML = `{Headline of article}`
-    card.appendChild(headline)
-
-    let author = document.createElement('div')
-    author.classList.add('author')
-    card.appendChild(author)
-
-    let imgContainer = document.createElement('div')
-    imgContainer.classList.add('img-container')
-    author.appendChild(imgContainer)
-
-    let img = document.createElement('img')
-    // img.src = `{url of authors image}`
-    imgContainer.appendChild(img)
-
-    let span = document.createElement('span')
-    span.innerHTML = `By {author's name}`
-    author.appendChild(span)
-
-
-}
-cardMaker()
